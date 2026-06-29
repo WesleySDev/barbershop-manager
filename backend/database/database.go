@@ -3,6 +3,7 @@ package database
 import (
 	"log"
 
+	"github.com/WesleySDev/barbershop-manager/models"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -17,4 +18,5 @@ func Connect() {
 	} else {
 		log.Println("Conectado ao PostgreSQL com sucesso!")
 	}
+	DB.AutoMigrate(&models.Client{})
 }
