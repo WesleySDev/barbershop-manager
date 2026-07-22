@@ -7,7 +7,11 @@ import (
 
 func GetClients(c *fiber.Ctx) error {
 
-	clients := services.GetClients()
-
+	clients, err := services.GetClients()
+	if err != nil {
+		return c.Status(500).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
 	return c.JSON(clients)
 }

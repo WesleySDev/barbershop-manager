@@ -1,20 +1,19 @@
 package services
 
 import (
+	"github.com/WesleySDev/barbershop-manager/database"
 	"github.com/WesleySDev/barbershop-manager/models"
 )
 
-func GetClients() []models.Client {
+func GetClients() ([]models.Client, error) {
 
-	clients := []models.Client{
-		{
-			ID:   1,
-			Name: "Wesley",
-		},
-		{
-			ID:   2,
-			Name: "Pedro",
-		},
+	var clients []models.Client
+
+	result := database.DB.Find(&clients)
+
+	if result.Error != nil {
+		return nil, result.Error
 	}
-	return clients
+	return clients, nil
+
 }
