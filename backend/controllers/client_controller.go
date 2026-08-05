@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"github.com/WesleySDev/barbershop-manager/models"
 	"github.com/WesleySDev/barbershop-manager/services"
 	"github.com/gofiber/fiber/v2"
 )
@@ -14,4 +15,12 @@ func GetClients(c *fiber.Ctx) error {
 		})
 	}
 	return c.JSON(clients)
+}
+
+func CreateClient(c *fiber.Ctx) error {
+	var client models.Client
+
+	if err := c.BodyParser(&client); err != nil {
+		return err
+	}
 }
