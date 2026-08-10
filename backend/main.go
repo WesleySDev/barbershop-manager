@@ -1,11 +1,13 @@
 package main
 
 import (
+	"github.com/WesleySDev/barbershop-manager/database"
 	"github.com/WesleySDev/barbershop-manager/routes"
 	"github.com/gofiber/fiber/v2"
 )
 
 func main() {
+	database.Connect()
 	app := fiber.New() // Criando um sevidor web novo e armazenando na variavel "app"
 
 	routes.SetupRoutes(app)
