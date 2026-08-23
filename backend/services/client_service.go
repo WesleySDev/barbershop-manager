@@ -28,7 +28,7 @@ func CreateClient(client models.Client) error {
 
 func UpdateClient(id int64, client models.Client) error {
 	var existingClient models.Client
-	result := database.DB.First(&existingClient, id)\
+	result := database.DB.First(&existingClient, id)
 
 	if result.Error != nil {
 		return result.Error
@@ -37,9 +37,24 @@ func UpdateClient(id int64, client models.Client) error {
 	existingClient.Telephone = client.Telephone
 	existingClient.Email = client.Email
 
-	if result := database.DB.Save(&existingClient);
-	result.Error != nil {
+	if result := database.DB.Save(&existingClient); result.Error != nil {
 		return result.Error
 	}
+	return nil
+}
+
+func DeleteClient(id int64) error {
+	var client models.Client
+
+	result := database.DB.First(&client, id)
+
+	if result.Error != nil {
+		return result.Error
+	}
+	result = database.DB.Delete(&client)
+	if result.Error != nil {
+		return result.Error
+	}
+
 	return nil
 }

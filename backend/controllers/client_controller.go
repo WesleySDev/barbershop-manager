@@ -42,12 +42,16 @@ func UpdateClient(c *fiber.Ctx) error {
 
 	id, err := strconv.ParseInt(idString, 10, 64)
 	if err != nil {
-		return err
+		return c.Status(400).JSON(fiber.Map{
+			"error": "ID invalido",
+		})
 	}
 	if err = c.BodyParser(&client); err != nil {
-		return err
+		return c.Status(400).JSON(fiber.Map{
+			"error": "Dados invalido",
+		})
 	}
-	services.UpdateClient(id, client)
+	err = services.UpdateClient(id, client)
 
 	if err != nil {
 		return c.Status(500).JSON(fiber.Map{
@@ -55,4 +59,26 @@ func UpdateClient(c *fiber.Ctx) error {
 		})
 	}
 	return c.JSON(client)
+}
+
+func DeleteClient(c *fiber.Ctx) error {
+	idString := c.Params("id")
+
+	id, err := strconv.ParseInt(idString, 10, 64)
+
+	if err != nil {
+		return c.Status(400).JSON(fiber.Map{
+			"error": "ID invalido",
+		})
+	}
+	err = services.DeleteClient(id)
+	if err != nil {
+		return c.Status(500).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+
+	}
+	return c.JSON(fiber.Map{
+		"message": "Cliente excluido com sucesso",
+	})
 }
