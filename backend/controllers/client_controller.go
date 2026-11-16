@@ -1,11 +1,13 @@
 package controllers
 
 import (
+	"errors"
 	"strconv"
 
 	"github.com/WesleySDev/barbershop-manager/models"
 	"github.com/WesleySDev/barbershop-manager/services"
 	"github.com/gofiber/fiber/v2"
+	"gorm.io/gorm"
 )
 
 func GetClients(c *fiber.Ctx) error {
@@ -72,11 +74,15 @@ func DeleteClient(c *fiber.Ctx) error {
 		})
 	}
 	err = services.DeleteClient(id)
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		return c.Status(404).JSON(fiber.Map{
+			"error": "Client not found",
+		})
+	}
 	if err != nil {
 		return c.Status(500).JSON(fiber.Map{
 			"error": err.Error(),
 		})
-
 	}
 	return c.JSON(fiber.Map{
 		"message": "Cliente excluido com sucesso",
